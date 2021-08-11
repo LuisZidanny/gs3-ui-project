@@ -1,0 +1,150 @@
+<div class="container">
+  <form *ngIf="form" [formGroup]="form" autocomplete="off">
+
+    <div class="ui-g">
+      <div class="ui-g-12 ui-fluid">
+        <h2>Cadastro Clientes</h2>
+      </div>
+
+      <div class="p-col-12 p-md-9 p-fluid">
+        <label>Nome *</label>
+        <input pInputText formControlName="nome" type="text" id="nome" required minlength="3" maxlength="100" >
+      </div>
+      <div *ngIf="obrigatorio && form.controls['nome'].invalid"
+             class="alert alert-danger">
+
+        <div *ngIf="form.controls['nome'].errors?.required">
+          Campo obrigatorio.
+        </div>
+        <div *ngIf="form.controls['nome'].errors?.minlength">
+          O nome deve ter pelo menos 3 caracteres.
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-9 p-fluid">
+        <label>CPF *</label>
+        <p-inputMask type="text" [required]="true" formControlName="cpf" id="cpf" mask="999.999.999-99" [unmask]="true"></p-inputMask>
+      </div>
+      <div *ngIf="obrigatorio && form.controls['cpf'].invalid"
+             class="alert alert-danger">
+
+        <div *ngIf="form.controls['cpf'].errors?.required">
+          Campo obrigatorio.
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-6 p-fluid">
+        <label>CEP *</label>
+        <p-inputMask type="text" [required]="true" formControlName="cep" id="cep" mask="99999-999" [unmask]="true"></p-inputMask>
+      </div>
+      <div *ngIf="obrigatorio && form.controls['cep'].invalid"
+             class="alert alert-danger">
+
+        <div *ngIf="form.controls['cep'].errors?.required">
+          Campo obrigatorio.
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-1">
+          <button pButton (click)="consultarCep()" pTooltip="Consultar Cpf" type="button">consultar</button>
+      </div>
+
+      <div class="p-col-12 p-md-6 p-fluid"></div>
+
+      <div class="p-col-12 p-md-9 p-fluid">
+        <label>Logradouro *</label>
+        <input pInputText formControlName="logradouro" id="logradouro" type="text" minlength="3" maxlength="100" required >
+      </div>
+      <div *ngIf="obrigatorio && form.controls['logradouro'].invalid"
+             class="alert alert-danger">
+
+        <div *ngIf="form.controls['logradouro'].errors?.required">
+          Campo obrigatorio.
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-9 p-fluid">
+        <label>bairro *</label>
+        <input pInputText formControlName="bairro" id="bairro" type="text"  maxlength="100" required >
+      </div>
+      <div *ngIf="obrigatorio && form.controls['bairro'].invalid"
+             class="alert alert-danger">
+
+        <div *ngIf="form.controls['bairro'].errors?.required">
+          Campo obrigatorio.
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-9 p-fluid">
+        <label>Cidade *</label>
+        <input pInputText formControlName="cidade" id="cidade" type="text" maxlength="100" required >
+      </div>
+      <div *ngIf="obrigatorio && form.controls['cidade'].invalid"
+             class="alert alert-danger">
+
+        <div *ngIf="form.controls['cidade'].errors?.required">
+          Campo obrigatorio.
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-9 p-fluid">
+        <label>UF *</label>
+        <input pInputText formControlName="uf" id="uf" type="text"  maxlength="100" required >
+      </div>
+      <div *ngIf="obrigatorio && form.controls['uf'].invalid"
+             class="alert alert-danger">
+
+        <div *ngIf="form.controls['uf'].errors?.required">
+          Campo obrigatorio.
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-9 p-fluid">
+        <label>Complemento</label>
+        <input pInputText formControlName="complemento" type="text" minlength="3" maxlength="100" >
+      </div>
+
+
+      <div *ngFor="let periodo of getControl().controls; let indexGroup=index">
+        <div formArrayName="telefones">
+          <div [formGroupName]="indexGroup">
+              <div class="p-col-12 p-md-9 p-fluid">
+                  <label>Telefone</label>
+                  <input appTelefone  pInputText maxlength="15" (blur)="validateLength(1)" formControlName="telefone" />
+                </div>
+              <div class="p-col-12 p-md-1">
+                <button *ngIf="indexGroup == 0" pButton (click)="adicionarNovoTelefone()" pTooltip="Adicionar">adicionar</button>
+                <button *ngIf="indexGroup > 0" pButton class="cursor-mao" (click)="removerNovoTelefone(indexGroup)" pTooltip="Remover">excluir</button>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngFor="let periodo of getControlEmail().controls; let indexGroup=index">
+        <div formArrayName="emails">
+          <div [formGroupName]="indexGroup">
+              <div class="p-col-12 p-md-9 p-fluid">
+                  <label>Email</label>
+                  <input pInputText type="text" type="email" formControlName="email" >
+                </div>
+              <div class="p-col-12 p-md-1">
+                <button *ngIf="indexGroup == 0" pButton (click)="adicionarNovoEmail()" pTooltip="Adicionar">adicionar</button>
+                <button *ngIf="indexGroup > 0" pButton class="cursor-mao" (click)="removerNovoEmail(indexGroup)" pTooltip="Remover">excluir</button>
+              </div>
+          </div>
+        </div>
+      </div>
+      <br><br>
+
+
+      <div class="container">
+        <div class="row">
+          <div class="col-1"><button (click)="salvar()" pButton pTooltip="Consultar Cpf" type="submit">salvar</button></div>
+          <div class="col-2"><a routerLink="/listar">listar de clientes</a></div>
+        </div>
+      </div>
+
+    </div>
+    </form>
+</div>
+
